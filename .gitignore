@@ -1,4 +1,5 @@
 build/*
+/home/atom/esp/esp4/esp-idf/*
 *.d
 *.o
 *.ko
