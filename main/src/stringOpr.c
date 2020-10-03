@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "stringOpr.h"
 
-
 char *rep_str(const char *s)
 {
     char *ret;
@@ -21,7 +20,7 @@ char *rep_str(const char *s)
             i += oldlen - 1;
         }
     }
-    ret = (char *)malloc(i + count * (newlen - oldlen));  
+    ret = (char *)malloc(i + count * (newlen - oldlen));
     i = 0;
     while (*s)
     {
@@ -38,16 +37,15 @@ char *rep_str(const char *s)
     return ret;
 }
 
-char *ssid(char *s)
+char *ssid(char s[])
 {
-    char * token = strtok(s, "~");
+    char *token = strtok(s, "~");
     return token;
 }
 
-
-char *pwd(char *s){
-    char * token = strtok(s, "~");
+char *pwd(char *s)
+{
+    char *token = strtok(s, "~");
     token = strtok(NULL, "~");
-    printf("%s",token);
     return token;
 }

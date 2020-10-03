@@ -46,12 +46,10 @@ void app_main(void)
             if ((ev.pin == WIFI_BUTTON) && (ev.event == BUTTON_LONG))
             {
                 // TODO:ADD CHECK QR OUTPUT CODE HERE
-                char a[] = "Pi0x1cAsdfghjkl12";
-                char *p;
-                p = rep_str(a);
-                printf("%s", p);
-                // printf("%s",ssid(p));
-                // printf("%s",pwd(p));
+                char qrOut[] = "Pi0x1cAsdfghjkl12";
+                char *defaultSSID = rep_str(qrOut);
+                char *defaultPassword = rep_str(qrOut);
+                printf("QR Scanner OUTPUT : %s| SSID: %s | PASSWORD: %s", qrOut, ssid(defaultSSID), pwd(defaultPassword));
             }
         }
     }
