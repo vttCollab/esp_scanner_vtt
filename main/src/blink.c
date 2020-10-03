@@ -2,12 +2,15 @@
 
 */
 #include <stdio.h>
+#include <stdint.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
+#include "nvs_flash.h"
 #include "sdkconfig.h"
 #include "button.h"
 #include "stringOpr.h"
+#include "wifiConnect.h"
 
 #define BLINK_GPIO 2
 #define WIFI_BUTTON 18
@@ -19,6 +22,7 @@ char *DEFAULT_PWD;
 
 void app_main(void)
 {
+    nvs_flash_init();
     /* Configure the IOMUX register for pad BLINK_GPIO (some pads are
        muxed to GPIO on reset already, but some default to other
        functions and need to be switched to GPIO. Consult the
@@ -49,7 +53,10 @@ void app_main(void)
                 char qrOut[] = "Pi0x1cAsdfghjkl12";
                 char *defaultSSID = rep_str(qrOut);
                 char *defaultPassword = rep_str(qrOut);
-                printf("QR Scanner OUTPUT : %s| SSID: %s | PASSWORD: %s", qrOut, ssid(defaultSSID), pwd(defaultPassword));
+                char *p1 = ssid(defaultSSID);
+                char *p2 = pwd(defaultPassword);
+                printf("QR Scanner OUTPUT : %s| SSID: %s | PASSWORD: %s", qrOut, p1, p2);
+                fast_scan(p1, p2);
             }
         }
     }
