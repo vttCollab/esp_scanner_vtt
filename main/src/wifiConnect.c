@@ -74,15 +74,14 @@ void connectWifi()
     ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL));
     ESP_ERROR_CHECK(esp_wifi_start());
 }
-/* Initialize Wi-Fi as sta and set scan method */
+/* Initialize Wi-Fi as sta and set scan method, connect to provided ssid and pwd */
 void fast_scan(char argSsid[], char argPwd[])
 {
+    ESP_ERROR_CHECK(esp_wifi_disconnect());
+    ESP_ERROR_CHECK(esp_wifi_stop());
+    ESP_ERROR_CHECK(esp_wifi_deinit());
     printf("\n IN Fast Scan %s | %s \n", argSsid, argPwd);
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    esp_netif_create_default_wifi_sta();
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
@@ -91,13 +90,12 @@ void fast_scan(char argSsid[], char argPwd[])
     // Initialize default station as network interface instance (esp-netif)
 
     wifi_sta_config_t t;
-    size_t n = sizeof(argSsid) / sizeof(char);
+    int n1 = string_ln(argSsid);
     int n2 = string_ln(argPwd);
-    printf("\n %d This is what matters :: %s | %s \n", n2, t.ssid, t.password);
-    memcpy(t.ssid, argSsid, n);
+    memcpy(t.ssid, argSsid, n1);
     memcpy(t.password, argPwd, n2);
 
-    printf("\n %d This is what matters :: %s | %s \n", n2, t.ssid, t.password);
+    printf("\n Debug Print after string operations on SSID : %s | PWD : %s \n", t.ssid, t.password);
     t.threshold.authmode = WIFI_AUTH_WPA2_PSK;
     wifi_config_t wifi_config;
     wifi_config.sta = t;
@@ -106,5 +104,5 @@ void fast_scan(char argSsid[], char argPwd[])
 
     ESP_ERROR_CHECK(esp_wifi_start());
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_FLASH));
-    ESP_LOGI(TAG, "wifi_init_sta finished.");
+    ESP_LOGI(TAG, "WIFI Config finished.");
 }
