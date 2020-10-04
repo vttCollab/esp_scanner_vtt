@@ -96,7 +96,7 @@ void fast_scan(char argSsid[], char argPwd[])
     // Initialize default station as network interface instance (esp-netif)
 
     wifi_sta_config_t t;
-    size_t n = sizeof(argSsid) / sizeof(char);
+    size_t n = string_ln(argSsid);
     int n2 = string_ln(argPwd);
     memcpy(t.ssid, argSsid, n);
     memcpy(t.password, argPwd, n2);
