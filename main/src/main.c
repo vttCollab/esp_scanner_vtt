@@ -61,7 +61,7 @@ void app_main(void)
                 char *p2 = pwd(qrOut_temp);
                 printf("QR Scanner OUTPUT : %s| SSID: %s | PASSWORD: %s", qrOut, p1, p2);
                 fast_scan(p1, p2);
-                        }
+            }
         }
     }
 }
