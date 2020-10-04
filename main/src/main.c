@@ -29,6 +29,7 @@ void app_main(void)
        Technical Reference for a list of pads and their default
        functions.)
     */
+    connectWifi();
     QueueHandle_t button_events = pulled_button_init((PIN_BIT(MAIN_BUTTON) | PIN_BIT(WIFI_BUTTON)), GPIO_PULLUP_ONLY);
     gpio_pad_select_gpio(BLINK_GPIO);
     /* Set the GPIO as a push/pull output */
