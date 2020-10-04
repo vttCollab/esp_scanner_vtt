@@ -29,6 +29,7 @@ void app_main(void)
        Technical Reference for a list of pads and their default
        functions.)
     */
+    connectWifi();
     QueueHandle_t button_events = pulled_button_init((PIN_BIT(MAIN_BUTTON) | PIN_BIT(WIFI_BUTTON)), GPIO_PULLUP_ONLY);
     gpio_pad_select_gpio(BLINK_GPIO);
     /* Set the GPIO as a push/pull output */
@@ -51,13 +52,16 @@ void app_main(void)
             {
                 // TODO:ADD CHECK QR OUTPUT CODE HERE
                 char qrOut[] = "Pi0x1cAsdfghjkl12";
-                char *defaultSSID = rep_str(qrOut);
-                char *defaultPassword = rep_str(qrOut);
-                char *p1 = ssid(defaultSSID);
-                char *p2 = pwd(defaultPassword);
+                int n = strlen(qrOut);
+                char qrOut_temp[n];
+                strcpy(qrOut_temp, qrOut);
+                printf("QR Scanner OUTPUT : %s | %s", qrOut, qrOut_temp);
+
+                char *p1 = ssid(qrOut);
+                char *p2 = pwd(qrOut_temp);
                 printf("QR Scanner OUTPUT : %s| SSID: %s | PASSWORD: %s", qrOut, p1, p2);
                 fast_scan(p1, p2);
-            }
+                        }
         }
     }
 }
