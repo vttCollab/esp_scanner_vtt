@@ -4,13 +4,25 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/atom/esp/esp4/esp-idf/components/**"
+                "/home/atom/esp/esp-idf/components/**",
+                "/home/atom/.espressif/tools/xtensa-esp32-elf/esp-2020r2-8.2.0/xtensa-esp32-elf/**",
+                "${workspaceFolder}/main/**"
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/clang",
+            "browse": {
+                "path": [
+                    "/home/atom/esp/esp-idf/components/**",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": false
+            },
+            "defines": [
+                "ESP32",
+                "FREERTOS"
+            ],
+            "compilerPath": "/home/atom/.espressif/tools/xtensa-esp32-elf/esp-2020r2-8.2.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc",
             "cStandard": "c11",
-            "cppStandard": "c++14",
-            "intelliSenseMode": "clang-x64"
+            "cppStandard": "c++17"
+            // "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         }
     ],
     "version": 4

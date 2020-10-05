@@ -1,5 +1,8 @@
 {
+    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.intelliSenseEngineFallback": "Disabled",
     "files.associations": {
-        "random": "c"
+        "*.h": "c",
+        "*.hpp": "c"
     }
 }
