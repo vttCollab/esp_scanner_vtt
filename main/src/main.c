@@ -3,6 +3,7 @@
 */
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
@@ -55,8 +56,6 @@ void app_main(void)
                 int n = strlen(qrOut);
                 char qrOut_temp[n];
                 strcpy(qrOut_temp, qrOut);
-                printf("QR Scanner OUTPUT : %s | %s", qrOut, qrOut_temp);
-
                 char *p1 = ssid(qrOut);
                 char *p2 = pwd(qrOut_temp);
                 printf("QR Scanner OUTPUT : %s| SSID: %s | PASSWORD: %s", qrOut, p1, p2);
