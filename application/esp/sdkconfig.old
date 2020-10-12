@@ -935,10 +935,10 @@ CONFIG_WPA_MBEDTLS_CRYPTO=y
 #
 # Google IoT Core Configuration
 #
-CONFIG_GIOT_PROJECT_ID="project_id"
-CONFIG_GIOT_LOCATION="us-central1-a"
-CONFIG_GIOT_REGISTRY_ID="registry_id"
-CONFIG_GIOT_DEVICE_ID="device_id"
+CONFIG_GIOT_PROJECT_ID="mqtt-scanner"
+CONFIG_GIOT_LOCATION="us-central1"
+CONFIG_GIOT_REGISTRY_ID="scanner-devices-registry"
+CONFIG_GIOT_DEVICE_ID="esp-internal-test"
 # CONFIG_GIOT_DEBUG_OUTPUT is not set
 # end of Google IoT Core Configuration
 # end of Component config

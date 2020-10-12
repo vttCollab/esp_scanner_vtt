@@ -500,7 +500,7 @@
     "OPENSSL_ASSERT_EXIT": true, 
     "OPENSSL_DEBUG": false, 
     "OTA_ALLOW_HTTP": false, 
-    "OUTPUT_GPIO": 27, 
+    "OUTPUT_GPIO": 2, 
     "PARTITION_TABLE_CUSTOM": false, 
     "PARTITION_TABLE_CUSTOM_FILENAME": "partitions.csv", 
     "PARTITION_TABLE_FILENAME": "partitions_singleapp.csv", 

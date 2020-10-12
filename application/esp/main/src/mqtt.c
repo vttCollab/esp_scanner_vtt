@@ -99,6 +99,10 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     free(publish_topic);
     free(publish_message);
 }
+static bool prefix(const char *pre, const char *str)
+{
+    return strncmp(pre, str, strlen(pre)) == 0;
+}
 
 void iotc_mqttlogic_subscribe_callback(
     iotc_context_handle_t in_context_handle, iotc_sub_call_type_t call_type,
@@ -113,6 +117,7 @@ void iotc_mqttlogic_subscribe_callback(
     {
         ESP_LOGI(TAG, "Subscription Topic: %s\n", params->message.topic);
         char *sub_message = (char *)malloc(params->message.temporary_payload_data_length + 1);
+
         if (sub_message == NULL)
         {
             ESP_LOGE(TAG, "Failed to allocate memory");
@@ -120,20 +125,28 @@ void iotc_mqttlogic_subscribe_callback(
         }
         memcpy(sub_message, params->message.temporary_payload_data, params->message.temporary_payload_data_length);
         sub_message[params->message.temporary_payload_data_length] = '\0';
+        ESP_LOGI(TAG, "Message Received: %s \n", sub_message);
         ESP_LOGI(TAG, "Message Payload: %s \n", params->message.topic);
-        if (strcmp(subscribe_topic_command, params->message.topic) == 0)
+        int rc = strncmp(subscribe_topic_command, params->message.topic,
+                         35);
+        if (rc == 0)
         {
-            int value;
-            sscanf(sub_message, "{\"outlet\": %d}", &value);
-            ESP_LOGI(TAG, "value: %d\n", value);
-            if (value == 1)
+            char str[20];
+            char i[10];
+            sscanf(sub_message, "%s %*s %s", str, i);
+            ESP_LOGI(TAG, "id: %s | Number: %s\n", str, i);
+            if (strcmp(i, "1"))
             {
                 gpio_set_level(OUTPUT_GPIO, true);
             }
-            else if (value == 0)
+            else if (strcmp(i, "0"))
             {
                 gpio_set_level(OUTPUT_GPIO, false);
             }
+        }
+        else
+        {
+            ESP_LOGI(TAG, " :Config received");
         }
         free(sub_message);
     }
