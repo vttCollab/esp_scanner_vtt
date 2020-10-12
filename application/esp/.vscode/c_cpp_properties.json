@@ -3,10 +3,10 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/home/atom/esp/esp-idf/components/**",
-                "/home/atom/.espressif/tools/xtensa-esp32-elf/esp-2020r2-8.2.0/xtensa-esp32-elf/**",
+                "/home/atom/Documents/VTT/github/espScanner/esp_scanner_vtt/iot-device-sdk-embedded-c/**",
                 "${workspaceFolder}/main/**",
+                "/home/atom/esp/esp-idf/components/**",
+                "/home/atom/.espressif/tools/xtensa-esp32-elf/esp-2020r2-8.2.0/xtensa-esp32-elf/**"
             ],
             "browse": {
                 "path": [

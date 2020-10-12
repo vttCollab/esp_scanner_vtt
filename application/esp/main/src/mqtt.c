@@ -17,7 +17,6 @@
 #include <time.h>
 #include "lwip/apps/sntp.h"
 #include "driver/gpio.h"
-
 #include "lwip/err.h"
 #include "lwip/sys.h"
 #include <iotc.h>
@@ -121,7 +120,7 @@ void iotc_mqttlogic_subscribe_callback(
         }
         memcpy(sub_message, params->message.temporary_payload_data, params->message.temporary_payload_data_length);
         sub_message[params->message.temporary_payload_data_length] = '\0';
-        ESP_LOGI(TAG, "Message Payload: %s \n", sub_message);
+        ESP_LOGI(TAG, "Message Payload: %s \n", params->message.topic);
         if (strcmp(subscribe_topic_command, params->message.topic) == 0)
         {
             int value;
@@ -155,19 +154,16 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle, void *
            in this example file and invokes the IoTC API to publish a
            message. */
         asprintf(&subscribe_topic_command, SUBSCRIBE_TOPIC_COMMAND, CONFIG_GIOT_DEVICE_ID);
-        printf("subscribe to topic: \"%s\"\n", subscribe_topic_command);
+        printf("subscribe to topic Command: \"%s\"\n", subscribe_topic_command);
         iotc_subscribe(in_context_handle, subscribe_topic_command, IOTC_MQTT_QOS_AT_LEAST_ONCE,
                        &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
 
         asprintf(&subscribe_topic_config, SUBSCRIBE_TOPIC_CONFIG, CONFIG_GIOT_DEVICE_ID);
-        printf("subscribe to topic: \"%s\"\n", subscribe_topic_config);
-        iotc_subscribe(in_context_handle, subscribe_topic_config, IOTC_MQTT_QOS_AT_LEAST_ONCE,
-                       &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
+        printf("subscribe to topic Config: \"%s\"\n", subscribe_topic_config);
+        iotc_subscribe(in_context_handle, subscribe_topic_config, IOTC_MQTT_QOS_AT_LEAST_ONCE, &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
 
-        /* Create a timed task to publish every 10 seconds. */
-        delayed_publish_task = iotc_schedule_timed_task(in_context_handle,
-                                                        publish_telemetry_event, 10,
-                                                        15, /*user_data=*/NULL);
+        // /* Create a timed task to publish every 10 seconds. */
+        // delayed_publish_task = iotc_schedule_timed_task(in_context_handle, publish_telemetry_event, 10, 15, /*user_data=*/NULL);
         break;
 
     /* IOTC_CONNECTION_STATE_OPEN_FAILED is set when there was a problem
@@ -241,17 +237,13 @@ static void mqtt_task(void *pvParameters)
     iotc_connect_private_key_data.crypto_key_signature_algorithm = IOTC_CRYPTO_KEY_SIGNATURE_ALGORITHM_ES256;
     iotc_connect_private_key_data.crypto_key_union_type = IOTC_CRYPTO_KEY_UNION_TYPE_PEM;
     iotc_connect_private_key_data.crypto_key_union.key_pem.key = (char *)ec_pv_key_start;
-    ESP_LOGI(TAG, "IN mQTT2");
-    /* initialize iotc library and create a context to use to connect to the
-    * GCP IoT Core Service. */
+    /* initialize iotc library and create a context to use to connect to the GCP IoT Core Service. */
     const iotc_state_t error_init = iotc_initialize();
-    ESP_LOGI(TAG, "IN mQTT3");
     if (IOTC_STATE_OK != error_init)
     {
         printf(" iotc failed to initialize, error: %d\n", error_init);
         vTaskDelete(NULL);
     }
-    ESP_LOGI(TAG, "IN mQTT4");
     /*  Create a connection context. A context represents a Connection
         on a single socket, and can be used to publish and subscribe
         to numerous topics. */
@@ -261,17 +253,14 @@ static void mqtt_task(void *pvParameters)
         printf(" iotc failed to create context, error: %d\n", -iotc_context);
         vTaskDelete(NULL);
     }
-    ESP_LOGI(TAG, "IN mQTT5");
     /*  Queue a connection request to be completed asynchronously.
         The 'on_connection_state_changed' parameter is the name of the
-        callback function after the connection request completes, and its
-        implementation should handle both successful connections and
-        unsuccessful connections as well as disconnections. */
+        callback function after the connection request completes, and its implementation should handle both successful connections and  unsuccessful connections as well as disconnections. */
     const uint16_t connection_timeout = 0;
     const uint16_t keepalive_timeout = 20;
 
     /* Generate the client authentication JWT, which will serve as the MQTT
-     * password. */
+     password. */
     char jwt[IOTC_JWT_SIZE] = {0};
     size_t bytes_written = 0;
     iotc_state_t state = iotc_create_iotcore_jwt(
