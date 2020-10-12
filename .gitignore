@@ -1,8 +1,5 @@
 build/*
-port/*
-iot-device-sdk-embedded-c/*
 /home/atom/esp/esp4/esp-idf/*
-.git.bak/*
 *.d
 *.o
 *.ko
